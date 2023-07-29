@@ -1,0 +1,74 @@
+
+<div class="container">
+	<div class="d-flex row justify-content-center p-3">
+		<input class="rounded form-control" type="search" name="search" [(ngModel)]="search" (ngModelChange)="getData()" placeholder="Cari...">
+
+		<div class="text-center p-3 mt-3" *ngIf="data.length == 0">Data Kosong</div>
+	</div>
+  <div
+    class="row row-cols-1 row-cols-sm-2 row-cols-md-4 g-2"
+    
+  >
+    <div class="col" *ngFor="let item of data">
+      <div class="card shadow-sm mt-3">
+        <div class="card-body">
+          <h5 class="card-title">{{ item.model }}</h5>
+          <p class="card-text">{{ item.merek }}</p>
+          <p class="card-text">{{ item.nomor_plat }}</p>
+          <div class="d-flex justify-content-between align-items-center">
+            <p class="card-text">{{ item.tarif.toLocaleString() }} / Hari</p>
+
+            <div class="btn-group">
+              <button type="button" (click)="openModal(content, item)" class="btn btn-sm btn-outline-primary">
+                Sewa
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<ng-template #content let-modal>
+	<div class="modal-header">
+		<h4 class="modal-title" id="modal-basic-title">Sewa {{item.model}} {{item.tarif.toLocaleString()}} / Hari</h4>
+		<button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+	</div>
+	<div class="modal-body">
+		<form>
+			<div class="mb-3">
+				<ngb-alert type="danger" *ngIf="error != ''" (closed)="closeAlert()">{{ error }}</ngb-alert>
+			  </div>
+			<div class="mb-3">
+				<label for="mulai">Tanggal Mulai</label>
+				<div class="input-group">
+					<input
+						id="mulai"
+            [(ngModel)]="mulai"
+						class="form-control"
+						placeholder="yyyy-mm-dd"
+						name="mulai"
+            type="date"
+					/>
+				</div>
+			</div>
+			<div class="mb-3">
+				<label for="selesai">Tanggal Selesai</label>
+				<div class="input-group">
+					<input
+						id="selesai"
+            [(ngModel)]="selesai"
+						class="form-control"
+						placeholder="yyyy-mm-dd"
+						name="selesai"
+            type="date"
+					/>
+				</div>
+			</div>
+		</form>
+	</div>
+	<div class="modal-footer">
+		<button type="button" class="btn btn-outline-primary" (click)="save()">Simpan</button>
+	</div>
+</ng-template>

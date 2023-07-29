@@ -1,0 +1,74 @@
+<div class="container">
+  <div class="p-4 d-flex justify-content-between align-items-center">
+    <h5 class="fw-bold">Data Pengembalian</h5>
+    <button type="button" (click)="openModal(content)" class="btn btn-primary">Kembalikan Mobil</button>
+  </div>
+  <table class="table table-striped mt-3">
+    <thead>
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">Model</th>
+        <th scope="col">Nomor Plat</th>
+        <th scope="col">Tanggal Sewa Mulai</th>
+        <th scope="col">Tanggal Sewa Selesai</th>
+        <th scope="col">Tanggal Pengembalian</th>
+        <th scope="col">Bayar per Hari</th>
+        <th scope="col">Total Bayar</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let item of data; index as i">
+        <th scope="row">{{ i + 1 }}</th>
+        <td>
+          {{ item.peminjaman.mobil.model }}
+        </td>
+        <td>{{ item.peminjaman.mobil.nomor_plat }}</td>
+        <td>{{ formatDate(item.peminjaman.tgl_mulai) }}</td>
+        <td>{{ formatDate(item.peminjaman.tgl_selesai) }}</td>
+        <td>{{ formatDate(item.created_at) }}</td>
+        <td>{{ item.peminjaman.mobil.tarif.toLocaleString() }}</td>
+        <td>{{ item.biaya.toLocaleString() }}</td>
+
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<ng-template #content let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">
+      Kembalikan Mobil
+    </h4>
+    <button
+      type="button"
+      class="btn-close"
+      aria-label="Close"
+      (click)="modal.dismiss('Cross click')"
+    ></button>
+  </div>
+  <div class="modal-body">
+    <form>
+      <div class="mb-3">
+        <label for="nomor">Nomor Plat</label>
+        <div class="input-group">
+          <input
+            id="nomor"
+            [(ngModel)]="nomor"
+            class="form-control"
+            placeholder="BE 1234 EE"
+            name="nomor"
+          />
+        </div>
+      </div>
+      <div class="mb-3">
+        <ngb-alert type="danger" *ngIf="error != ''" (closed)="closeAlert()">{{ error }}</ngb-alert>
+      </div>
+    </form>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline-primary" (click)="save()">
+      Simpan
+    </button>
+  </div>
+</ng-template>
+
